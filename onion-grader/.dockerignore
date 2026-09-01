@@ -1,0 +1,14 @@
+# .dockerignore — keeps the deploy image small & clean
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+datasets/
+models/
+backend/data/
+*.db
+docs/
+.DS_Store
+README.md

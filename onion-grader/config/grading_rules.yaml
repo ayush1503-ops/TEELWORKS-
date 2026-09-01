@@ -1,0 +1,117 @@
+# =====================================================================
+# ONION GRADING RULES  —  THE CONFIGURABLE HEART OF THE SYSTEM (Layer D)
+# =====================================================================
+# This file is deliberately kept OUTSIDE the code: when the competent
+# authority (e.g. a procurement/marketing federation standard) supplies the
+# real thresholds, ONLY THIS FILE CHANGES — no code, no retraining.
+#
+#  !! DISCLAIMER: these numbers are PROTOTYPE placeholders. They are NOT
+#  !! an official standard. rule_version is stamped on every result and
+#  !! every report so judges can see which rule set produced a grade.
+# =====================================================================
+
+rule_version: prototype-v1
+official_standard: false            # flip to true + paste official numbers when supplied
+
+disclaimer: >
+  Prototype grading rules — NOT an official standard. Thresholds and weights
+  are configurable placeholders pending the official procurement/quality
+  specification from the competent authority.
+
+# ---------------------------------------------------------------------
+# Onion detection sanity limits (Layer A)
+# ---------------------------------------------------------------------
+analysis:
+  min_onion_area_fraction: 0.02     # onion must cover >= 2% of the photo
+  max_onion_area_fraction: 0.92     # ... and <= 92% (else segmentation is suspect)
+  poor_lighting_mean_value: 60      # 0-255 HSV brightness below this = poor light
+  shadow_risk_bg_std: 55            # background brightness spread → shadow risk
+
+# ---------------------------------------------------------------------
+# Quality score (Layer C) — transparent weighted formula, max 90 base points
+# ---------------------------------------------------------------------
+scoring:
+  components:                       # max points each (sum = 90)
+    appearance: 25
+    size: 10
+    shape: 15
+    colour_uniformity: 15
+    skin_condition: 15
+    surface_cleanliness: 10
+  defect_penalties:                 # points subtracted when defect is SEVERE
+    rot: 45
+    sprouting: 30
+    physical_damage: 25
+    surface_spots: 15
+    deformed: 15
+    discolored: 10
+  severity_multipliers:             # actual penalty = max × multiplier
+    minor: 0.4
+    moderate: 0.7
+    severe: 1.0
+
+# ---------------------------------------------------------------------
+# Grade thresholds (Layer D) — map quality score → grade
+# ---------------------------------------------------------------------
+grade_thresholds:
+  A:   { min_score: 80 }
+  B:   { min_score: 65 }
+  C:   { min_score: 45 }
+  URS: { min_score: 0 }
+
+# Size rules in MILLIMETRES — only usable when a size reference is calibrated
+size_rules:
+  calibrated: false                 # true only after coin/ArUco calibration (Phase 8)
+  diameter_mm:
+    A:   [55, null]
+    B:   [45, 55]
+    C:   [35, 45]
+    URS: [null, 35]
+
+recommendations:
+  A: "Accept — best quality"
+  B: "Accept"
+  C: "Accept with price differential / secondary use"
+  URS: "Reject / divert to URS (under-size / reject) category"
+
+# ---------------------------------------------------------------------
+# Defect detection rules (Layer B, rule engine v1)
+# Each defect triggers at `minor`, escalates at `moderate`/`severe`.
+# Confidence is COMPUTED from how far the measurement exceeds the minor
+# threshold — never invented.
+# ---------------------------------------------------------------------
+defect_rules:
+  rot:
+    metric: dark_region_ratio
+    thresholds: { minor: 0.05, moderate: 0.12, severe: 0.22 }
+    conf_scale: 6.0                 # confidence = 0.5 + scale × (value − minor), cap 0.95
+  surface_spots:
+    min_spot_count: 3               # distinct dark spots
+    min_largest_spot_ratio: 0.010   # or one spot covering >1% of onion area
+    conf_scale: 40.0
+  physical_damage:
+    metric: edge_density
+    thresholds: { minor: 0.06, moderate: 0.10, severe: 0.16 }
+    conf_scale: 8.0
+  sprouting:
+    metric: green_top_ratio
+    thresholds: { minor: 0.015, moderate: 0.05, severe: 0.12 }
+    conf_scale: 7.0
+  discolored:
+    metric: hue_circular_std_deg
+    thresholds: { minor: 14, moderate: 20, severe: 28 }
+    conf_scale: 0.05
+  deformed:
+    circularity: { minor: 0.86, moderate: 0.78, severe: 0.68 }
+    solidity:    { minor: 0.90, moderate: 0.85, severe: 0.78 }
+    conf_scale: 4.0
+
+# Mapping used by the evaluation page: defect name → dataset class label
+defect_to_class:
+  rot: rotten
+  physical_damage: damaged
+  surface_spots: damaged
+  sprouting: sprouted
+  discolored: discolored
+  deformed: deformed
+  undersized: undersized

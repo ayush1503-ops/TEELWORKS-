@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Onion Quality Analyzer</title>
+  <meta name="description" content="AI-assisted onion quality assessment and grading — SIH 26031 prototype" />
+  <meta name="theme-color" content="#7c2d12" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='37' r='23' fill='%23c2410c'/%3E%3Cpath d='M32 14 C34 7 38 5 44 3 C40 9 38 11 37 14 Z' fill='%2316a34a'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="logo" aria-hidden="true">🧅</div>
+    <h1>Onion Quality Analyzer</h1>
+    <p class="tagline">Objective quality assessment &amp; grading</p>
+    <span class="phase-badge">Full prototype · rule engine v1 · grades configurable</span>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab is-active" data-tab="analyze" role="tab">🧅 Analyze</button>
+    <button class="tab" data-tab="scan" role="tab">🎥 Scan</button>
+    <button class="tab" data-tab="batch" role="tab">📦 Batch</button>
+    <button class="tab" data-tab="test" role="tab">🧪 Test</button>
+  </nav>
+
+  <div id="banner" class="banner" hidden></div>
+
+  <main class="screen">
+
+    <!-- ═════════════════ TAB 1 : ANALYZE ═════════════════ -->
+    <section id="tab-analyze" class="tabpanel is-active" aria-label="Analyze one onion">
+
+      <!-- 1) HOME -->
+      <div id="view-home" class="view is-active">
+        <div class="card intro-card">
+          <p>Take a photo of <strong>one onion</strong> on a plain background, or upload an
+             existing image. The pipeline detects the onion, measures visible features,
+             checks for defects and estimates a grade.</p>
+          <p class="muted small">JPG · JPEG · PNG &nbsp;·&nbsp; up to 8 MB · one onion per photo</p>
+        </div>
+        <button id="btn-take-photo" class="btn btn-primary" type="button">📷 Take Photo</button>
+        <button id="btn-upload" class="btn btn-outline" type="button">🗂️ Upload Image</button>
+
+        <div id="camera-modal" class="modal" hidden>
+          <div class="modal-box" role="dialog" aria-label="Camera">
+            <video id="camera-video" autoplay playsinline muted></video>
+            <p id="camera-error" class="error-text" hidden></p>
+            <div class="btn-row">
+              <button id="btn-capture" class="btn btn-primary" type="button">📸 Capture</button>
+              <button id="btn-camera-close" class="btn btn-ghost" type="button">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2) PREVIEW -->
+      <div id="view-preview" class="view">
+        <h2 class="view-title">Check your photo</h2>
+        <figure class="preview-frame"><img id="preview-img" alt="Selected onion photo" /></figure>
+        <p id="file-meta" class="muted small center"></p>
+        <div class="btn-row">
+          <button id="btn-retake" class="btn btn-outline" type="button">↺ Retake</button>
+          <button id="btn-analyze" class="btn btn-primary" type="button">⚡ Analyze Onion</button>
+        </div>
+      </div>
+
+      <!-- 3) PROCESSING -->
+      <div id="view-processing" class="view">
+        <div class="card processing-card">
+          <div class="spinner" role="status" aria-label="Processing"></div>
+          <p id="processing-status" class="center">Uploading image…</p>
+          <p class="muted small center">Detecting onion → measuring features → checking defects →<br />scoring → grading</p>
+        </div>
+      </div>
+
+      <!-- 4) RESULT -->
+      <div id="view-result" class="view">
+        <h2 class="view-title">Onion Result</h2>
+        <div id="result-card" class="result-holder"><!-- filled by app.js --></div>
+        <button id="btn-start-over" class="btn btn-outline" type="button">🔍 Analyze another onion</button>
+      </div>
+    </section>
+
+    <!-- ═════════════════ TAB 2 : SCAN (multi-onion pile) ═════════════════ -->
+    <section id="tab-scan" class="tabpanel" aria-label="Scan a pile of onions">
+      <div class="card intro-card">
+        <p>📸 <strong>Scan a whole pile at once.</strong> Take one photo of many onions —
+           each onion is detected, analysed and <strong>colour-coded</strong> (rotten = red,
+           sprouted = cyan, damaged = amber, healthy = green), then a downloadable
+           report is generated.</p>
+        <p class="muted small">Works best from ~50 cm above the pile, even light.</p>
+      </div>
+      <button id="btn-scan-photo" class="btn btn-primary" type="button">📷 Take Photo</button>
+      <button id="btn-scan-upload" class="btn btn-outline" type="button">🗂️ Upload Photo</button>
+      <input type="file" id="scan-file" accept="image/jpeg,image/png" hidden />
+      <input type="file" id="scan-camera" accept="image/jpeg,image/png" capture="environment" hidden />
+
+      <div id="scan-preview-wrap" hidden>
+        <h2 class="view-title" style="margin-top:16px">Check the photo</h2>
+        <figure class="preview-frame"><img id="scan-preview-img" alt="Pile of onions" /></figure>
+        <div class="btn-row">
+          <button id="btn-scan-retake" class="btn btn-outline" type="button">↺ Retake</button>
+          <button id="btn-scan-run" class="btn btn-primary" type="button">⚡ Scan Onions</button>
+        </div>
+      </div>
+
+      <div id="scan-progress" class="card" hidden>
+        <div class="spinner" role="status"></div>
+        <p class="center" id="scan-progress-text">Detecting onions…</p>
+        <p class="muted small center">segmenting instances → measuring each onion → AI ensemble → colour coding</p>
+      </div>
+
+      <div id="scan-result" class="result-holder"></div>
+    </section>
+
+    <!-- ═════════════════ TAB 3 : BATCH ═════════════════ -->
+    <section id="tab-batch" class="tabpanel" aria-label="Batch analysis">
+      <div class="card intro-card">
+        <p>Upload <strong>multiple onion photos</strong> (up to 25) to get the batch
+           distribution: Grade A / B / C / URS percentages and average quality score.</p>
+      </div>
+      <button id="btn-batch-upload" class="btn btn-primary" type="button">📦 Choose onion photos</button>
+      <input type="file" id="batch-input" accept="image/jpeg,image/png" multiple hidden />
+      <div id="batch-progress" class="card" hidden>
+        <p class="center" id="batch-progress-text">Analysing…</p>
+        <div class="progress-track"><div id="batch-progress-bar" class="progress-fill"></div></div>
+      </div>
+      <div id="batch-dashboard" class="result-holder"><!-- filled by app.js --></div>
+    </section>
+
+    <!-- ═════════════════ TAB 3 : TEST ═════════════════ -->
+    <section id="tab-test" class="tabpanel" aria-label="Testing and evaluation">
+      <div class="card intro-card">
+        <p><strong>Evaluation page.</strong> Upload an onion image with its <em>actual</em>
+           label to compare against the system's prediction. Metrics are computed only
+           from images actually tested here — no unverified accuracy claims.</p>
+      </div>
+      <div class="card">
+        <label class="field-label" for="eval-file">Onion image</label>
+        <input type="file" id="eval-file" accept="image/jpeg,image/png" class="file-field" />
+        <label class="field-label" for="eval-actual">Actual (true) label</label>
+        <select id="eval-actual" class="select-field">
+          <option value="healthy">healthy</option>
+          <option value="rotten">rotten</option>
+          <option value="damaged">damaged</option>
+          <option value="sprouted">sprouted</option>
+          <option value="undersized">undersized</option>
+          <option value="discolored">discolored</option>
+          <option value="deformed">deformed</option>
+        </select>
+        <button id="btn-eval-run" class="btn btn-primary" type="button">▶ Run test</button>
+      </div>
+      <div id="eval-table-holder" class="result-holder"></div>
+      <button id="btn-eval-dataset" class="btn btn-primary" type="button">🏁 Run held-out test set (live)</button>
+      <div id="eval-dataset-holder" class="result-holder"></div>
+      <div class="btn-row">
+        <button id="btn-eval-metrics" class="btn btn-outline" type="button">📊 Compute metrics</button>
+      </div>
+      <div id="eval-metrics-holder" class="result-holder"></div>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p><strong>SIH Problem Statement 26031</strong> · Ministry of Consumer Affairs, Food &amp; Public Distribution</p>
+    <p>Department of Consumer Affairs (DOCA) · Category: Software · Theme: Smart Automation</p>
+    <p class="muted small">Rule-based prototype grading (configurable — not an official standard).
+       Internal quality cannot be judged from a photo. Percentages in batch mode are shares of
+       the batch, not model confidences.</p>
+  </footer>
+
+  <!-- Hidden file pickers (single-analyze flow) -->
+  <input type="file" id="file-input" accept="image/jpeg,image/png" hidden />
+  <input type="file" id="camera-input" accept="image/jpeg,image/png" capture="environment" hidden />
+
+  <script src="js/app.js"></script>
+</body>
+</html>
