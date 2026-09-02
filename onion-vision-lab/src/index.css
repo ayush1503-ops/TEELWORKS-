@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+  background: #0b0714;
+  color: #ede9fe;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+::selection {
+  background: #a78bfa44;
+}
+
+.panel {
+  @apply rounded-2xl border border-lab-line bg-lab-panel/80 backdrop-blur;
+}
+
+.btn-primary {
+  @apply rounded-xl bg-lab-accent/20 px-5 py-2.5 text-sm font-semibold text-lab-accent border border-lab-accent/40 transition hover:bg-lab-accent/30 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none;
+}
+
+.btn-ghost {
+  @apply rounded-xl border border-lab-line px-4 py-2 text-sm text-violet-200/80 transition hover:border-lab-accent/40 hover:text-lab-accent active:scale-[0.98] disabled:opacity-40;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}

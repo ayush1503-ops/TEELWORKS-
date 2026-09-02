@@ -1,0 +1,323 @@
+{
+  "framework": "scikit-learn",
+  "models": {
+    "cnn_alone": {
+      "model": "pytorch-cnn (onnx)",
+      "accuracy": 0.912,
+      "macro_f1": 0.912,
+      "confusion": [
+        [
+          70,
+          2,
+          0
+        ],
+        [
+          13,
+          59,
+          0
+        ],
+        [
+          0,
+          4,
+          68
+        ]
+      ],
+      "per_class": {
+        "clear": {
+          "precision": 0.8433734939759037,
+          "recall": 0.9722222222222222,
+          "f1-score": 0.9032258064516129,
+          "support": 72.0
+        },
+        "review": {
+          "precision": 0.9076923076923077,
+          "recall": 0.8194444444444444,
+          "f1-score": 0.8613138686131386,
+          "support": 72.0
+        },
+        "suspect": {
+          "precision": 1.0,
+          "recall": 0.9444444444444444,
+          "f1-score": 0.9714285714285714,
+          "support": 72.0
+        },
+        "accuracy": 0.9120370370370371,
+        "macro avg": {
+          "precision": 0.9170219338894038,
+          "recall": 0.9120370370370369,
+          "f1-score": 0.9119894154977742,
+          "support": 216.0
+        },
+        "weighted avg": {
+          "precision": 0.9170219338894038,
+          "recall": 0.9120370370370371,
+          "f1-score": 0.9119894154977743,
+          "support": 216.0
+        }
+      }
+    },
+    "rf_alone": {
+      "model": "calibrated-randomforest",
+      "accuracy": 0.662,
+      "macro_f1": 0.6682,
+      "confusion": [
+        [
+          40,
+          31,
+          1
+        ],
+        [
+          31,
+          40,
+          1
+        ],
+        [
+          4,
+          5,
+          63
+        ]
+      ],
+      "per_class": {
+        "clear": {
+          "precision": 0.5333333333333333,
+          "recall": 0.5555555555555556,
+          "f1-score": 0.54421768707483,
+          "support": 72.0
+        },
+        "review": {
+          "precision": 0.5263157894736842,
+          "recall": 0.5555555555555556,
+          "f1-score": 0.5405405405405406,
+          "support": 72.0
+        },
+        "suspect": {
+          "precision": 0.9692307692307692,
+          "recall": 0.875,
+          "f1-score": 0.9197080291970803,
+          "support": 72.0
+        },
+        "accuracy": 0.6620370370370371,
+        "macro avg": {
+          "precision": 0.6762932973459289,
+          "recall": 0.6620370370370371,
+          "f1-score": 0.6681554189374835,
+          "support": 216.0
+        },
+        "weighted avg": {
+          "precision": 0.6762932973459288,
+          "recall": 0.6620370370370371,
+          "f1-score": 0.6681554189374836,
+          "support": 216.0
+        }
+      }
+    },
+    "heuristic_alone": {
+      "model": "hsv-heuristic",
+      "accuracy": 0.4444,
+      "macro_f1": 0.3496,
+      "confusion": [
+        [
+          0,
+          45,
+          27
+        ],
+        [
+          0,
+          35,
+          37
+        ],
+        [
+          0,
+          11,
+          61
+        ]
+      ],
+      "per_class": {
+        "clear": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 72.0
+        },
+        "review": {
+          "precision": 0.38461538461538464,
+          "recall": 0.4861111111111111,
+          "f1-score": 0.4294478527607362,
+          "support": 72.0
+        },
+        "suspect": {
+          "precision": 0.488,
+          "recall": 0.8472222222222222,
+          "f1-score": 0.6192893401015228,
+          "support": 72.0
+        },
+        "accuracy": 0.4444444444444444,
+        "macro avg": {
+          "precision": 0.2908717948717949,
+          "recall": 0.4444444444444444,
+          "f1-score": 0.3495790642874197,
+          "support": 216.0
+        },
+        "weighted avg": {
+          "precision": 0.2908717948717949,
+          "recall": 0.4444444444444444,
+          "f1-score": 0.3495790642874197,
+          "support": 216.0
+        }
+      }
+    },
+    "fused": {
+      "model": "meta-logistic fusion (OOF stacking)",
+      "accuracy": 0.8935,
+      "macro_f1": 0.8945,
+      "confusion": [
+        [
+          67,
+          5,
+          0
+        ],
+        [
+          11,
+          61,
+          0
+        ],
+        [
+          0,
+          7,
+          65
+        ]
+      ],
+      "per_class": {
+        "clear": {
+          "precision": 0.8589743589743589,
+          "recall": 0.9305555555555556,
+          "f1-score": 0.8933333333333333,
+          "support": 72.0
+        },
+        "review": {
+          "precision": 0.8356164383561644,
+          "recall": 0.8472222222222222,
+          "f1-score": 0.8413793103448276,
+          "support": 72.0
+        },
+        "suspect": {
+          "precision": 1.0,
+          "recall": 0.9027777777777778,
+          "f1-score": 0.948905109489051,
+          "support": 72.0
+        },
+        "accuracy": 0.8935185185185185,
+        "macro avg": {
+          "precision": 0.8981969324435077,
+          "recall": 0.8935185185185185,
+          "f1-score": 0.8945392510557374,
+          "support": 216.0
+        },
+        "weighted avg": {
+          "precision": 0.8981969324435077,
+          "recall": 0.8935185185185185,
+          "f1-score": 0.8945392510557374,
+          "support": 216.0
+        }
+      }
+    }
+  },
+  "features": {
+    "n_features": 26,
+    "type": "HSV stats + LBP(9) + edges + entropy (hsv_features.py)"
+  },
+  "rf": {
+    "n_estimators": 300,
+    "calibration": "CalibratedClassifierCV(sigmoid, cv=3)",
+    "oof": "cross_val_predict + GroupKFold(3) by crop"
+  },
+  "meta": {
+    "learner": "LogisticRegression(multinomial)",
+    "fitted_on": "train-split OOF predictions (n=672; CNN 3-fold by crop via oof_cnn.py)",
+    "C_selected_on_val": 1.0,
+    "val_macro_f1": 0.8411,
+    "features": [
+      "cnn_p0",
+      "cnn_p1",
+      "cnn_p2",
+      "rf_p0",
+      "rf_p1",
+      "rf_p2",
+      "heu_p0",
+      "heu_p1",
+      "heu_p2",
+      "cue_darkRatio",
+      "cue_satStd",
+      "cue_greenTop",
+      "cue_paleRatio",
+      "cue_edgeDensity",
+      "cue_laplacianVar"
+    ],
+    "coef": [
+      [
+        2.313,
+        -0.78,
+        -1.534,
+        0.951,
+        -0.32,
+        -0.633,
+        0.07,
+        0.337,
+        -0.409,
+        -0.339,
+        0.297,
+        0.585,
+        0.388,
+        0.175,
+        -0.387
+      ],
+      [
+        -0.921,
+        2.291,
+        -1.335,
+        0.036,
+        0.468,
+        -0.469,
+        -0.018,
+        0.439,
+        -0.386,
+        -0.041,
+        0.073,
+        0.145,
+        -0.202,
+        -0.449,
+        -0.261
+      ],
+      [
+        -1.392,
+        -1.511,
+        2.869,
+        -0.988,
+        -0.148,
+        1.102,
+        -0.052,
+        -0.777,
+        0.795,
+        0.38,
+        -0.37,
+        -0.731,
+        -0.186,
+        0.274,
+        0.648
+      ]
+    ],
+    "test_logloss": 0.2907
+  },
+  "selection": {
+    "policy": "configuration chosen by VAL macro-F1; TEST scored once",
+    "val_macro_f1": {
+      "cnn": 0.8295,
+      "rf": 0.5991,
+      "heuristic": 0.4137,
+      "fused": 0.8411
+    },
+    "honest_note": "on the frozen TEST split the CNN alone may score higher than the fusion; the fusion was selected on VAL and is served because it uses three independent signals, but both numbers are reported rather than hiding the comparison"
+  },
+  "fitted_on_scope": "train=28 crops (OOF), val=8 crops (model selection), test=12 frozen crops",
+  "scope": "frozen 12 test crops, programmatic synthetic damage over real crops from ONE field photo; field validation pending"
+}

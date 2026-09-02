@@ -1,0 +1,821 @@
+{
+  "frozen": true,
+  "seed": 27030,
+  "positives": [
+    {
+      "image": "test_0000.jpg",
+      "sha256": "e7631ef981d2",
+      "boxes": 5
+    },
+    {
+      "image": "test_0001.jpg",
+      "sha256": "2f6936ae4a79",
+      "boxes": 3
+    },
+    {
+      "image": "test_0002.jpg",
+      "sha256": "38cc1e6de308",
+      "boxes": 2
+    },
+    {
+      "image": "test_0003.jpg",
+      "sha256": "9f8c43215bfd",
+      "boxes": 5
+    },
+    {
+      "image": "test_0004.jpg",
+      "sha256": "cc85f56171c3",
+      "boxes": 1
+    },
+    {
+      "image": "test_0005.jpg",
+      "sha256": "a54d7d4f12e0",
+      "boxes": 3
+    },
+    {
+      "image": "test_0006.jpg",
+      "sha256": "8c34ca2f74c0",
+      "boxes": 4
+    },
+    {
+      "image": "test_0007.jpg",
+      "sha256": "f4b16070cb33",
+      "boxes": 4
+    },
+    {
+      "image": "test_0008.jpg",
+      "sha256": "ebb1b1e0a828",
+      "boxes": 4
+    },
+    {
+      "image": "test_0009.jpg",
+      "sha256": "6d6dd7538965",
+      "boxes": 3
+    },
+    {
+      "image": "test_0010.jpg",
+      "sha256": "f5efec73c438",
+      "boxes": 4
+    },
+    {
+      "image": "test_0011.jpg",
+      "sha256": "4f08d2999333",
+      "boxes": 4
+    },
+    {
+      "image": "test_0012.jpg",
+      "sha256": "9adba422bef7",
+      "boxes": 3
+    },
+    {
+      "image": "test_0013.jpg",
+      "sha256": "c15db83914ba",
+      "boxes": 5
+    },
+    {
+      "image": "test_0014.jpg",
+      "sha256": "44b9c3439c38",
+      "boxes": 3
+    },
+    {
+      "image": "test_0015.jpg",
+      "sha256": "5628a56e5f1a",
+      "boxes": 4
+    },
+    {
+      "image": "test_0016.jpg",
+      "sha256": "b4910b6cfd80",
+      "boxes": 5
+    },
+    {
+      "image": "test_0017.jpg",
+      "sha256": "5afebf4c069c",
+      "boxes": 3
+    },
+    {
+      "image": "test_0018.jpg",
+      "sha256": "a99cca9decf0",
+      "boxes": 1
+    },
+    {
+      "image": "test_0019.jpg",
+      "sha256": "a73b2ba8a654",
+      "boxes": 3
+    },
+    {
+      "image": "test_0020.jpg",
+      "sha256": "f3213d543e88",
+      "boxes": 1
+    },
+    {
+      "image": "test_0021.jpg",
+      "sha256": "71d01daeb14b",
+      "boxes": 1
+    },
+    {
+      "image": "test_0022.jpg",
+      "sha256": "9db79feff8c9",
+      "boxes": 3
+    },
+    {
+      "image": "test_0023.jpg",
+      "sha256": "0716b37a4afc",
+      "boxes": 3
+    },
+    {
+      "image": "test_0024.jpg",
+      "sha256": "b7c7026ad777",
+      "boxes": 1
+    },
+    {
+      "image": "test_0025.jpg",
+      "sha256": "dfb389496e18",
+      "boxes": 5
+    },
+    {
+      "image": "test_0026.jpg",
+      "sha256": "74b1b510be38",
+      "boxes": 1
+    },
+    {
+      "image": "test_0027.jpg",
+      "sha256": "149d2397ae3f",
+      "boxes": 5
+    },
+    {
+      "image": "test_0028.jpg",
+      "sha256": "0e9574f919bf",
+      "boxes": 1
+    },
+    {
+      "image": "test_0029.jpg",
+      "sha256": "e306f1b3871c",
+      "boxes": 2
+    },
+    {
+      "image": "test_0030.jpg",
+      "sha256": "ca686522b328",
+      "boxes": 4
+    },
+    {
+      "image": "test_0031.jpg",
+      "sha256": "849507ae77d9",
+      "boxes": 1
+    },
+    {
+      "image": "test_0032.jpg",
+      "sha256": "75f2f686b545",
+      "boxes": 2
+    },
+    {
+      "image": "test_0033.jpg",
+      "sha256": "14ab00420134",
+      "boxes": 3
+    },
+    {
+      "image": "test_0034.jpg",
+      "sha256": "2a4ee87cc937",
+      "boxes": 4
+    },
+    {
+      "image": "test_0035.jpg",
+      "sha256": "3359e047c6c0",
+      "boxes": 3
+    },
+    {
+      "image": "test_0036.jpg",
+      "sha256": "65f95cd59cb8",
+      "boxes": 4
+    },
+    {
+      "image": "test_0037.jpg",
+      "sha256": "5b46fc8571b0",
+      "boxes": 3
+    },
+    {
+      "image": "test_0038.jpg",
+      "sha256": "ccc5f7a1def0",
+      "boxes": 5
+    },
+    {
+      "image": "test_0039.jpg",
+      "sha256": "80c890366e9a",
+      "boxes": 5
+    },
+    {
+      "image": "test_0040.jpg",
+      "sha256": "136fc7a0c385",
+      "boxes": 2
+    },
+    {
+      "image": "test_0041.jpg",
+      "sha256": "fe99ff18f41e",
+      "boxes": 3
+    },
+    {
+      "image": "test_0042.jpg",
+      "sha256": "89544f737c55",
+      "boxes": 5
+    },
+    {
+      "image": "test_0043.jpg",
+      "sha256": "df3bf946a26e",
+      "boxes": 5
+    },
+    {
+      "image": "test_0044.jpg",
+      "sha256": "eb17360b0676",
+      "boxes": 2
+    },
+    {
+      "image": "test_0045.jpg",
+      "sha256": "f02e28f64a59",
+      "boxes": 3
+    },
+    {
+      "image": "test_0046.jpg",
+      "sha256": "7b2e1207b668",
+      "boxes": 2
+    },
+    {
+      "image": "test_0047.jpg",
+      "sha256": "241504a285cb",
+      "boxes": 3
+    },
+    {
+      "image": "test_0048.jpg",
+      "sha256": "d2da20e15001",
+      "boxes": 4
+    },
+    {
+      "image": "test_0049.jpg",
+      "sha256": "f3af13e02bd0",
+      "boxes": 2
+    },
+    {
+      "image": "test_0050.jpg",
+      "sha256": "f086ee99c3cb",
+      "boxes": 2
+    },
+    {
+      "image": "test_0051.jpg",
+      "sha256": "2d24817e00dd",
+      "boxes": 5
+    },
+    {
+      "image": "test_0052.jpg",
+      "sha256": "b83c0ff038d4",
+      "boxes": 5
+    },
+    {
+      "image": "test_0053.jpg",
+      "sha256": "2f84cf624aad",
+      "boxes": 3
+    },
+    {
+      "image": "test_0054.jpg",
+      "sha256": "aa45df15197f",
+      "boxes": 4
+    },
+    {
+      "image": "test_0055.jpg",
+      "sha256": "390724b8c470",
+      "boxes": 2
+    },
+    {
+      "image": "test_0056.jpg",
+      "sha256": "8f660103bd6d",
+      "boxes": 3
+    },
+    {
+      "image": "test_0057.jpg",
+      "sha256": "53b07f4eb654",
+      "boxes": 3
+    },
+    {
+      "image": "test_0058.jpg",
+      "sha256": "497efa1e05c0",
+      "boxes": 1
+    },
+    {
+      "image": "test_0059.jpg",
+      "sha256": "e54f0c3e8666",
+      "boxes": 5
+    },
+    {
+      "image": "test_0060.jpg",
+      "sha256": "523889e961fe",
+      "boxes": 4
+    },
+    {
+      "image": "test_0061.jpg",
+      "sha256": "1d1a812be4ab",
+      "boxes": 4
+    },
+    {
+      "image": "test_0062.jpg",
+      "sha256": "ace26e1ea19f",
+      "boxes": 1
+    },
+    {
+      "image": "test_0063.jpg",
+      "sha256": "df5874dff8b2",
+      "boxes": 4
+    },
+    {
+      "image": "test_0064.jpg",
+      "sha256": "dbb102df33aa",
+      "boxes": 2
+    },
+    {
+      "image": "test_0065.jpg",
+      "sha256": "5c861a017754",
+      "boxes": 1
+    },
+    {
+      "image": "test_0066.jpg",
+      "sha256": "cdbadbc7dd62",
+      "boxes": 2
+    },
+    {
+      "image": "test_0067.jpg",
+      "sha256": "9c5c460abbe2",
+      "boxes": 3
+    },
+    {
+      "image": "test_0068.jpg",
+      "sha256": "f1da72b8fa59",
+      "boxes": 3
+    },
+    {
+      "image": "test_0069.jpg",
+      "sha256": "7267aad99b01",
+      "boxes": 4
+    },
+    {
+      "image": "test_0070.jpg",
+      "sha256": "a520b55300e2",
+      "boxes": 1
+    },
+    {
+      "image": "test_0071.jpg",
+      "sha256": "fc94b5b475d5",
+      "boxes": 4
+    },
+    {
+      "image": "test_0072.jpg",
+      "sha256": "63833a46b1d4",
+      "boxes": 3
+    },
+    {
+      "image": "test_0073.jpg",
+      "sha256": "2f2df205928c",
+      "boxes": 2
+    },
+    {
+      "image": "test_0074.jpg",
+      "sha256": "e3d1fee13063",
+      "boxes": 5
+    },
+    {
+      "image": "test_0075.jpg",
+      "sha256": "e6416b931f9c",
+      "boxes": 4
+    },
+    {
+      "image": "test_0076.jpg",
+      "sha256": "5bf75966c260",
+      "boxes": 3
+    },
+    {
+      "image": "test_0077.jpg",
+      "sha256": "65dba52c8967",
+      "boxes": 4
+    },
+    {
+      "image": "test_0078.jpg",
+      "sha256": "22ae0e085deb",
+      "boxes": 3
+    },
+    {
+      "image": "test_0079.jpg",
+      "sha256": "6c84b21871a5",
+      "boxes": 3
+    },
+    {
+      "image": "test_0080.jpg",
+      "sha256": "a39bd7703c65",
+      "boxes": 5
+    },
+    {
+      "image": "test_0081.jpg",
+      "sha256": "b264fc99d2fe",
+      "boxes": 1
+    },
+    {
+      "image": "test_0082.jpg",
+      "sha256": "92e4f5c3e1c4",
+      "boxes": 1
+    },
+    {
+      "image": "test_0083.jpg",
+      "sha256": "ecf68bcbdef9",
+      "boxes": 5
+    },
+    {
+      "image": "test_0084.jpg",
+      "sha256": "cdc8ac2d3810",
+      "boxes": 4
+    },
+    {
+      "image": "test_0085.jpg",
+      "sha256": "94da073d0867",
+      "boxes": 5
+    },
+    {
+      "image": "test_0086.jpg",
+      "sha256": "d0c83906f8cd",
+      "boxes": 3
+    },
+    {
+      "image": "test_0087.jpg",
+      "sha256": "1ce66f39a7d8",
+      "boxes": 5
+    },
+    {
+      "image": "test_0088.jpg",
+      "sha256": "0274f5b2fdee",
+      "boxes": 4
+    },
+    {
+      "image": "test_0089.jpg",
+      "sha256": "e2e8525b272b",
+      "boxes": 4
+    },
+    {
+      "image": "test_0090.jpg",
+      "sha256": "0b0b8750ff78",
+      "boxes": 4
+    },
+    {
+      "image": "test_0091.jpg",
+      "sha256": "ecd1381193cc",
+      "boxes": 1
+    },
+    {
+      "image": "test_0092.jpg",
+      "sha256": "814f0ffce7d7",
+      "boxes": 2
+    },
+    {
+      "image": "test_0093.jpg",
+      "sha256": "28bcefe811d2",
+      "boxes": 2
+    },
+    {
+      "image": "test_0094.jpg",
+      "sha256": "e1d70d986af3",
+      "boxes": 5
+    },
+    {
+      "image": "test_0095.jpg",
+      "sha256": "9f50d09cd065",
+      "boxes": 4
+    },
+    {
+      "image": "test_0096.jpg",
+      "sha256": "bfbd7d928716",
+      "boxes": 5
+    },
+    {
+      "image": "test_0097.jpg",
+      "sha256": "d82b69af3127",
+      "boxes": 2
+    },
+    {
+      "image": "test_0098.jpg",
+      "sha256": "98166a6ac660",
+      "boxes": 4
+    },
+    {
+      "image": "test_0099.jpg",
+      "sha256": "4f132d489631",
+      "boxes": 3
+    },
+    {
+      "image": "test_0100.jpg",
+      "sha256": "66bdf6a3e3c6",
+      "boxes": 3
+    },
+    {
+      "image": "test_0101.jpg",
+      "sha256": "488bfc7a4088",
+      "boxes": 2
+    },
+    {
+      "image": "test_0102.jpg",
+      "sha256": "781aee7aa605",
+      "boxes": 5
+    },
+    {
+      "image": "test_0103.jpg",
+      "sha256": "d3870085d6f4",
+      "boxes": 2
+    },
+    {
+      "image": "test_0104.jpg",
+      "sha256": "5ba4ee165935",
+      "boxes": 2
+    },
+    {
+      "image": "test_0105.jpg",
+      "sha256": "51277a9447e0",
+      "boxes": 1
+    },
+    {
+      "image": "test_0106.jpg",
+      "sha256": "8b24074d6506",
+      "boxes": 2
+    },
+    {
+      "image": "test_0107.jpg",
+      "sha256": "1e2971a32120",
+      "boxes": 5
+    },
+    {
+      "image": "test_0108.jpg",
+      "sha256": "16c643f90856",
+      "boxes": 1
+    },
+    {
+      "image": "test_0109.jpg",
+      "sha256": "b43916a0dc7d",
+      "boxes": 2
+    },
+    {
+      "image": "test_0110.jpg",
+      "sha256": "00c45b7e34bd",
+      "boxes": 4
+    },
+    {
+      "image": "test_0111.jpg",
+      "sha256": "07aeb0a0e5ff",
+      "boxes": 3
+    },
+    {
+      "image": "test_0112.jpg",
+      "sha256": "daea08b3fddc",
+      "boxes": 4
+    },
+    {
+      "image": "test_0113.jpg",
+      "sha256": "d2d93313e098",
+      "boxes": 1
+    },
+    {
+      "image": "test_0114.jpg",
+      "sha256": "a91b9cbb82d5",
+      "boxes": 3
+    },
+    {
+      "image": "test_0115.jpg",
+      "sha256": "80a3442c7b24",
+      "boxes": 3
+    },
+    {
+      "image": "test_0116.jpg",
+      "sha256": "72af287d70fd",
+      "boxes": 4
+    },
+    {
+      "image": "test_0117.jpg",
+      "sha256": "c514315d23ea",
+      "boxes": 5
+    },
+    {
+      "image": "test_0118.jpg",
+      "sha256": "a5afdac11efa",
+      "boxes": 4
+    },
+    {
+      "image": "test_0119.jpg",
+      "sha256": "7dae1cf553b9",
+      "boxes": 3
+    },
+    {
+      "image": "test_0120.jpg",
+      "sha256": "c581221c3ce5",
+      "boxes": 3
+    },
+    {
+      "image": "test_0121.jpg",
+      "sha256": "028e83641c4d",
+      "boxes": 3
+    },
+    {
+      "image": "test_0122.jpg",
+      "sha256": "91d371af19d9",
+      "boxes": 4
+    },
+    {
+      "image": "test_0123.jpg",
+      "sha256": "6dca99afaae5",
+      "boxes": 4
+    },
+    {
+      "image": "test_0124.jpg",
+      "sha256": "9a1656208a77",
+      "boxes": 3
+    },
+    {
+      "image": "test_0125.jpg",
+      "sha256": "d54ab42dcfa6",
+      "boxes": 1
+    },
+    {
+      "image": "test_0126.jpg",
+      "sha256": "ca3d9f558436",
+      "boxes": 3
+    },
+    {
+      "image": "test_0127.jpg",
+      "sha256": "8afeb04d5f88",
+      "boxes": 3
+    },
+    {
+      "image": "test_0128.jpg",
+      "sha256": "0d0a844cf400",
+      "boxes": 4
+    },
+    {
+      "image": "test_0129.jpg",
+      "sha256": "cf20a55eff37",
+      "boxes": 3
+    }
+  ],
+  "negatives": [
+    {
+      "image": "testn_0000.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0001.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0002.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0003.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0004.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0005.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0006.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0007.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0008.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0009.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0010.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0011.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0012.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0013.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0014.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0015.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0016.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0017.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0018.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0019.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0020.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0021.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0022.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0023.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0024.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0025.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0026.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0027.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0028.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0029.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0030.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0031.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0032.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0033.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0034.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0035.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0036.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0037.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0038.jpg",
+      "boxes": 0
+    },
+    {
+      "image": "testn_0039.jpg",
+      "boxes": 0
+    }
+  ],
+  "iou_threshold": 0.5,
+  "conf_threshold": 0.45,
+  "note": "130 positive scenes from 9 held-out crops + 40 distractor-only negatives"
+}
