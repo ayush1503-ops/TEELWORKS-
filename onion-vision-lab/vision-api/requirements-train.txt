@@ -1,0 +1,23 @@
+# Onion Vision Lab - training-time dependencies (CPU-only sandbox, 2 vCPU)
+# Serving needs only requirements.txt
+#
+# NOTE on torch: this sandbox cannot reach download.pytorch.org (TLS blocked),
+# so torch/torchvision come from PyPI (CUDA-bundled wheel, runs CPU-only here -
+# torch.cuda.is_available() == False). On an open network prefer:
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+torch>=2.2
+torchvision>=0.17
+tensorflow-cpu==2.18.0
+tf2onnx>=1.16
+onnx>=1.16
+onnxruntime>=1.18
+onnxscript>=0.1
+ultralytics>=8.3
+opencv-python-headless>=4.10
+scikit-learn>=1.5
+numpy>=1.26,<3
+pillow>=10.0
+joblib>=1.4
+fastapi>=0.115
+uvicorn[standard]>=0.30
+brotli>=1.1

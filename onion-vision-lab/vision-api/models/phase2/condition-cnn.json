@@ -1,0 +1,248 @@
+{
+  "framework": "pytorch",
+  "model": "MobileNetV2 (ImageNet transfer) + 3-class head",
+  "pretrained_source": "torchvision mobilenet_v2-b0353104 bundled in PyPI package fdet-offline-mobilenet-weights (download.pytorch.org unreachable)",
+  "imgsz": 96,
+  "batch": 8,
+  "epochs": 8,
+  "train_seconds": 174.4,
+  "test": {
+    "tag": "TEST",
+    "n": 216,
+    "acc": 0.912,
+    "macro_f1": 0.9114,
+    "confusion": [
+      [
+        72,
+        0,
+        0
+      ],
+      [
+        15,
+        57,
+        0
+      ],
+      [
+        0,
+        4,
+        68
+      ]
+    ]
+  },
+  "history": [
+    {
+      "tag": "val@1",
+      "n": 144,
+      "acc": 0.7361,
+      "macro_f1": 0.7201,
+      "confusion": [
+        [
+          44,
+          1,
+          3
+        ],
+        [
+          20,
+          21,
+          7
+        ],
+        [
+          2,
+          5,
+          41
+        ]
+      ]
+    },
+    {
+      "tag": "val@2",
+      "n": 144,
+      "acc": 0.75,
+      "macro_f1": 0.7386,
+      "confusion": [
+        [
+          48,
+          0,
+          0
+        ],
+        [
+          29,
+          19,
+          0
+        ],
+        [
+          7,
+          0,
+          41
+        ]
+      ]
+    },
+    {
+      "tag": "val@3",
+      "n": 144,
+      "acc": 0.7778,
+      "macro_f1": 0.7818,
+      "confusion": [
+        [
+          37,
+          11,
+          0
+        ],
+        [
+          13,
+          34,
+          1
+        ],
+        [
+          1,
+          6,
+          41
+        ]
+      ]
+    },
+    {
+      "tag": "val@4",
+      "n": 144,
+      "acc": 0.8194,
+      "macro_f1": 0.8114,
+      "confusion": [
+        [
+          46,
+          2,
+          0
+        ],
+        [
+          17,
+          27,
+          4
+        ],
+        [
+          2,
+          1,
+          45
+        ]
+      ]
+    },
+    {
+      "tag": "val@5",
+      "n": 144,
+      "acc": 0.7917,
+      "macro_f1": 0.7936,
+      "confusion": [
+        [
+          33,
+          15,
+          0
+        ],
+        [
+          11,
+          36,
+          1
+        ],
+        [
+          0,
+          3,
+          45
+        ]
+      ]
+    },
+    {
+      "tag": "val@6",
+      "n": 144,
+      "acc": 0.8125,
+      "macro_f1": 0.805,
+      "confusion": [
+        [
+          47,
+          1,
+          0
+        ],
+        [
+          20,
+          26,
+          2
+        ],
+        [
+          2,
+          2,
+          44
+        ]
+      ]
+    },
+    {
+      "tag": "val@7",
+      "n": 144,
+      "acc": 0.8264,
+      "macro_f1": 0.8226,
+      "confusion": [
+        [
+          41,
+          7,
+          0
+        ],
+        [
+          14,
+          31,
+          3
+        ],
+        [
+          0,
+          1,
+          47
+        ]
+      ]
+    },
+    {
+      "tag": "val@8",
+      "n": 144,
+      "acc": 0.8264,
+      "macro_f1": 0.8226,
+      "confusion": [
+        [
+          41,
+          7,
+          0
+        ],
+        [
+          14,
+          31,
+          3
+        ],
+        [
+          0,
+          1,
+          47
+        ]
+      ]
+    },
+    {
+      "tag": "TEST",
+      "n": 216,
+      "acc": 0.912,
+      "macro_f1": 0.9114,
+      "confusion": [
+        [
+          72,
+          0,
+          0
+        ],
+        [
+          15,
+          57,
+          0
+        ],
+        [
+          0,
+          4,
+          68
+        ]
+      ]
+    }
+  ],
+  "onnx_parity_maxdiff": 1.7285346984863281e-06,
+  "classes": [
+    "clear",
+    "review",
+    "suspect"
+  ],
+  "scope": "frozen 12 test crops x 6 variants/class = 216 images, programmatic synthetic damage over real crops from ONE field photo; field validation pending"
+}

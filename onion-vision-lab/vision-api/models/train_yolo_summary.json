@@ -1,0 +1,15 @@
+{
+  "best_weights_source": "/home/user/TEELWORKS-/onion-vision-lab/vision-api/datasets/runs/onion_v2/weights/best.pt",
+  "onnx": "/home/user/TEELWORKS-/onion-vision-lab/vision-api/models/onion-yolov8n.onnx",
+  "val_at_export": {
+    "metrics/precision(B)": 0.9869,
+    "metrics/recall(B)": 0.9527,
+    "metrics/mAP50(B)": 0.9743,
+    "metrics/mAP50-95(B)": 0.9226,
+    "fitness": 0.9226
+  },
+  "note": "early-stopped plateau export (from scratch; see METRICS.md)",
+  "epochs": 15,
+  "imgsz": 320,
+  "batch": 8
+}

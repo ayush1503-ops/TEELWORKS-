@@ -1,0 +1,19 @@
+node_modules/
+dist/
+.env.local
+*.local
+__pycache__/
+*.pyc
+.DS_Store
+logs/
+*.zip
+uploads/
+
+# regenerable dataset images (seeded generators rebuild them; manifests kept)
+onion-vision-lab/vision-api/datasets/scenes/train/
+onion-vision-lab/vision-api/datasets/scenes/val/
+onion-vision-lab/vision-api/datasets/scenes/test/
+onion-vision-lab/vision-api/datasets/condition/train/
+onion-vision-lab/vision-api/datasets/condition/val/
+onion-vision-lab/vision-api/datasets/condition/test/
+onion-vision-lab/vision-api/datasets/runs/

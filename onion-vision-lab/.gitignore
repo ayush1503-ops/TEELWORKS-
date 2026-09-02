@@ -1,0 +1,15 @@
+node_modules
+dist
+.env.local
+*.local
+playwright-report
+test-results
+vision-api/datasets/scenes/train
+vision-api/datasets/scenes/val
+vision-api/datasets/scenes/test
+vision-api/datasets/condition/train
+vision-api/datasets/condition/val
+vision-api/datasets/condition/test
+vision-api/datasets/runs
+vision-api/**/__pycache__
+.DS_Store

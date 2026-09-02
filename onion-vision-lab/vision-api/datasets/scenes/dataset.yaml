@@ -1,0 +1,6 @@
+path: /home/user/TEELWORKS-/onion-vision-lab/vision-api/datasets/scenes
+train: train/images
+val: val/images
+test: test/images
+nc: 1
+names: ['onion']
