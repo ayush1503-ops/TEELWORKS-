@@ -1,17 +1,23 @@
 /**
  * Engine selector - the ONLY place that knows engines exist.
  *
- * Priority: VITE_VISION_API (default '/vision-api', proxied by Vite to
- * localhost:8788) -> the remote inference API. If it cannot be reached or
- * fails, we degrade gracefully to the in-browser HSV heuristic and label
- * the engine DEMO. The UI consumes OnionResult[] either way.
+ * Priority: VITE_VISION_API env var controls the API base URL:
+ *   - Not set / undefined  → '/vision-api'  (Vite dev-server proxies to localhost:8788)
+ *   - Set to empty string  → ''             (same-origin deployment: API at /api/...)
+ *   - Set to a URL         → that URL       (cross-origin explicit override)
+ *
+ * If the remote API cannot be reached or fails, we degrade gracefully to
+ * the in-browser HSV heuristic and label the engine DEMO. The UI consumes
+ * OnionResult[] either way.
  */
 
 import type { AnalyzeResponse, SourceMode } from '../types/vision';
 import { localHeuristicAnalyze } from './localHeuristic';
 
-export const REMOTE_BASE: string =
-  (import.meta.env.VITE_VISION_API as string | undefined) ?? '/vision-api';
+// Use explicit null/undefined check so that VITE_VISION_API='' (empty) is
+// honoured as same-origin (no prefix) rather than falling through to '/vision-api'.
+const _envBase = import.meta.env.VITE_VISION_API as string | undefined;
+export const REMOTE_BASE: string = _envBase !== undefined ? _envBase : '/vision-api';
 
 export interface EngineInfo {
   kind: 'remote' | 'local';
