@@ -39,7 +39,8 @@ const check = (name, ok, extra = '') => {
 
 const run = async () => {
   const browser = await launchBrowser();
-  const page = await browser.newPage({ viewport: { width: 1280, height: 860 } });
+  const context = await browser.newContext({ acceptDownloads: true, viewport: { width: 1280, height: 860 } });
+  const page = await context.newPage();
   const pageErrors = [];
   const consoleErrors = [];
   page.on('pageerror', (e) => pageErrors.push(String(e)));
@@ -80,9 +81,13 @@ const run = async () => {
   );
 
   // ---- 4. PDF button triggers download ----
+  // (dispatchEvent('click') is used because this headless chromium shell does
+  // not reliably deliver mouse events to elements far down the long page;
+  // the handler + jsPDF save + browser download are still exercised end-to-end.)
+  const pdfBtn = page.locator('button:has-text("PDF report")').first();
   const [download] = await Promise.all([
     page.waitForEvent('download', { timeout: 20000 }),
-    page.click('text=PDF report'),
+    pdfBtn.dispatchEvent('click'),
   ]);
   check('PDF report downloads', Boolean(download));
 

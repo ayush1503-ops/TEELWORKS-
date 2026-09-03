@@ -122,3 +122,20 @@ It is **not** intended for:
 
 *See also: [METRICS.md](vision-api/METRICS.md) for full measured benchmark
 tables and methodology.*
+
+---
+
+## 9. Variety & Colour
+
+- The UI shows a per-onion variety chip (red / golden / purple / white /
+  unknown). It is a **colour-family ESTIMATE from the visible skin**, never a
+  cultivar identification and never ground truth.
+- The models were trained on ONE variety/lighting. A colour-shift stress test
+  (programmatic HSV re-colourings of the frozen test set) is measured and
+  tabulated in METRICS.md section 2 — the out-of-family shift honestly fails
+  (F1 drops and 10/40 negatives fire), which is exactly why generalising to
+  unseen onion colours is **unvalidated**. Shallots and other alliums are not
+  yet measured.
+- A camera cannot tell white/cream onions from washed-out lighting reliably:
+  low-saturation skin is decided by cream dominance, otherwise reported as
+  UNKNOWN rather than guessed.

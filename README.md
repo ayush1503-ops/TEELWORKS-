@@ -6,17 +6,24 @@ Consumer Affairs problem statement 26031.
 **Current build (Phase 2):** the full stack lives in `onion-vision-lab/` inside this repo:
 
 * **UI** — React 18 + TypeScript strict + Vite (5174) + Tailwind + Framer
-  Motion + Three.js/R3F + jsPDF. Journey: 3D hero → scan (camera on-click /
-  upload / sample) → multi-onion detection with animated tracking circles →
-  results dashboard → 3D inspection (AI-INFERRED REGION hotspots) →
-  why-flagged panel → PDF report. Engines are swappable behind one contract
-  (`OnionResult[]`) with a graceful local-DEMOfallback.
+  Motion + Three.js/R3F + jsPDF, designed in the style of the earlier ONION
+  LAB project (light theme, glass cards, dot-grid backgrounds, electric-blue
+  accents). One page: Navbar → Hero (3D onion + floating sensor cards) →
+  Project story → How it works (4 steps) → Vision Lab (scanner with a LIVE
+  on-device colour preview) → 3D Explorer (photo-textured onion + layer
+  analysis + model-signal trace) → Metrics dashboard (live `/api/health`
+  numbers with scopes) → Footer. Upload / live camera / sample tray photo →
+  GREEN · YELLOW · RED verdicts in plain language → formal PDF report.
+  Variety labels are per-onion colour ESTIMATES (red / golden / purple /
+  white / unknown), never ground truth. Engines are swappable behind one
+  contract (`OnionResult[]`) with a graceful local-DEMO fallback.
 * **vision API** — FastAPI (8788): YOLOv8n single-class "onion" detector
-  (ONNX, conf 0.45, 832px) → TensorFlow/Keras onion-vs-not-onion verifier
-  gate → per-onion condition ensemble: **PyTorch** MobileNetV2 CNN (transfer
-  learning) + **scikit-learn** calibrated RandomForest + HSV heuristic, fused
-  by a logistic meta-learner. Measured on frozen test sets — see
-  `onion-vision-lab/vision-api/METRICS.md`.
+  (ONNX, conf 0.45, letterbox **320** — size re-validated on VAL) →
+  TensorFlow/Keras onion-vs-not-onion verifier gate → per-onion condition
+  ensemble: **PyTorch** MobileNetV2 CNN (transfer learning) + **scikit-learn**
+  calibrated RandomForest + HSV heuristic, fused by a logistic meta-learner.
+  Measured on frozen test sets, plus a measured colour-shift stress test
+  (single-variety honesty) — see `onion-vision-lab/vision-api/METRICS.md`.
 
 Legacy material kept in this repo:
 

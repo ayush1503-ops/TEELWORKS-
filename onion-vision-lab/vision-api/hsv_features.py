@@ -151,3 +151,96 @@ def condition_cues(bgr: np.ndarray) -> dict:
         "edgeDensity": float((mag > 60).mean()),
         "laplacianVar": float(cv2.Laplacian(gray, cv2.CV_32F).var()),
     }
+
+
+# ---------------------------------------------------------------------------
+# Skin-tone variety ESTIMATE (never ground truth - a colour heuristic)
+# ---------------------------------------------------------------------------
+#
+# The app must be honest that it cannot tell one onion variety from another by
+# pixels alone. `estimate_variety` returns a labelled ESTIMATE derived from the
+# skin colour of the visible surface, following the fixed rule set:
+#
+#   chromatic skin mask : hue<=48 or hue>=190 (deg) with s>=0.22
+#   cream mask          : s<0.28 with v>=0.45 and warm hue (low-sat white/cream)
+#   then median hue of the skin mask decides:
+#       RED    hue<=24  or hue>=345
+#       GOLDEN hue<=48
+#       PURPLE hue 190..345
+#   else WHITE if the cream mask covers >=25% of a bright skin, else UNKNOWN
+#
+# Variety here is a colour-family estimate only: lighting, curing and soil all
+# shift skin colour, so the label always travels with "estimate" in the UI.
+
+VARIETY_LABELS = {
+    "RED": "red",
+    "GOLDEN": "golden/yellow",
+    "PURPLE": "purple/violet",
+    "WHITE": "white/cream",
+    "UNKNOWN": "unknown",
+}
+VARIETIES = tuple(VARIETY_LABELS.keys())
+
+
+def estimate_variety(bgr: np.ndarray) -> dict:
+    """Estimate the skin colour-family of an onion crop (labelled ESTIMATE).
+
+    Returns {"variety": <key>, "confidence": 0..1, "skinFraction": 0..1}
+    where confidence = fraction of skin-classified pixels whose family agrees
+    with the median-hue decision (0 for UNKNOWN). This is a colour heuristic,
+    NOT a cultivar classifier.
+    """
+    img = _resize_max(bgr)
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    h = hsv[..., 0].astype(np.float32) * 2.0          # 0..358 deg
+    s = hsv[..., 1].astype(np.float32) / 255.0        # 0..1
+    v = hsv[..., 2].astype(np.float32) / 255.0        # 0..1
+    total = max(1, int(h.size))
+
+    chromatic = ((h <= 48.0) | (h >= 190.0)) & (s >= 0.22)
+    cream = (s < 0.28) & (v >= 0.45) & ((h <= 60.0) | (h >= 300.0))  # warm cream
+    skin = chromatic | cream
+    skin_fraction = float(skin.mean())
+
+    if skin_fraction < 0.02:
+        return {"variety": "UNKNOWN", "confidence": 0.0, "skinFraction": skin_fraction}
+
+    # Bright low-saturation skin has an unstable hue (white balance + lighting
+    # shift it freely), so a cream-DOMINANT surface is decided as WHITE before
+    # any median-hue bucket. Saturated red/gold/purple skins never reach this.
+    cream_fraction = float((cream & (v >= 0.55)).mean())
+    chromatic_fraction = float(chromatic.mean())
+    if cream_fraction >= 0.25 and chromatic_fraction < cream_fraction:
+        variety = "WHITE"
+    else:
+        hue_med = float(np.median(h[skin]))
+        if hue_med <= 24.0 or hue_med >= 345.0:
+            variety = "RED"
+        elif hue_med <= 48.0:
+            variety = "GOLDEN"
+        elif 190.0 <= hue_med < 345.0:
+            variety = "PURPLE"
+        else:
+            # median hue sits in the cool/green gap (48..190 deg): the visible
+            # skin is not warm-toned, and the surface was not cream-dominant.
+            variety = "UNKNOWN"
+
+    if variety == "UNKNOWN":
+        conf = 0.0
+    else:
+        # share of skin pixels whose colour-family matches the decision
+        if variety == "RED":
+            agree = (h <= 24.0) | (h >= 345.0)
+        elif variety == "GOLDEN":
+            agree = (h > 24.0) & (h <= 48.0)
+        elif variety == "PURPLE":
+            agree = (h >= 190.0) & (h < 345.0)
+        else:  # WHITE
+            agree = cream & (v >= 0.55)
+        conf = float(agree[skin].mean()) if int(agree[skin].sum()) > 0 else 0.0
+
+    return {
+        "variety": variety,
+        "confidence": round(conf, 3),
+        "skinFraction": round(skin_fraction, 4),
+    }

@@ -10,6 +10,9 @@ export type StatusLabel =
   | 'NEEDS REVIEW'
   | 'VISIBLE DAMAGE';
 
+/** colour-family ESTIMATE of the variety from visible skin — never ground truth */
+export type OnionVariety = 'RED' | 'GOLDEN' | 'PURPLE' | 'WHITE' | 'UNKNOWN';
+
 export type FindingKind =
   | 'Surface Discoloration'
   | 'Surface Damage'
@@ -66,6 +69,9 @@ export interface OnionResult {
   modelName: string;
   notes?: string;
   signals?: ModelSignals;
+  /** colour-family estimate (RED/GOLDEN/PURPLE/WHITE/UNKNOWN) — an estimate */
+  variety: OnionVariety;
+  varietyConfidence: number;
 }
 
 export type SourceMode = 'camera' | 'upload' | 'demo';
@@ -90,14 +96,38 @@ export interface AnalyzeResponse {
   meta: AnalyzeMeta;
 }
 
-export const STATUS_COLORS: Record<OnionStatus, string> = {
-  GREEN: 'text-lab-green border-lab-green/40 bg-lab-green/10',
-  YELLOW: 'text-lab-amber border-lab-amber/40 bg-lab-amber/10',
-  RED: 'text-lab-red border-lab-red/40 bg-lab-red/10',
+/* ------------------------------------------------------------------ *
+ * plain-language helpers — numbers always travel WITH meaning (F8)
+ * ------------------------------------------------------------------ */
+
+export const STATUS_TEXT: Record<OnionStatus, string> = {
+  GREEN: 'No obvious visible damage on the surface that was photographed.',
+  YELLOW: 'Something on the skin deserves a closer look — e.g. dark patches seen on the skin.',
+  RED: 'Clear visible signs of damage were found on the skin.',
 };
 
-export const STATUS_DOT: Record<OnionStatus, string> = {
-  GREEN: 'bg-lab-green',
-  YELLOW: 'bg-lab-amber',
-  RED: 'bg-lab-red',
+export const STATUS_COLORS: Record<OnionStatus, { text: string; chip: string; bar: string; hex: string }> = {
+  GREEN: { text: 'text-green', chip: 'bg-greenSoft text-green border-green/25', bar: 'bg-green', hex: '#16A34A' },
+  YELLOW: { text: 'text-amber', chip: 'bg-amberSoft text-amber border-amber/25', bar: 'bg-amber', hex: '#D97706' },
+  RED: { text: 'text-red', chip: 'bg-redSoft text-red border-red/25', bar: 'bg-red', hex: '#DC2626' },
 };
+
+export const VARIETY_LABEL: Record<OnionVariety, string> = {
+  RED: 'Red variety',
+  GOLDEN: 'Golden / yellow',
+  PURPLE: 'Purple / violet',
+  WHITE: 'White / cream',
+  UNKNOWN: 'Colour not clear',
+};
+
+/** human sentence for each finding (kept in the findings vocabulary only) */
+export const FINDING_TEXT: Record<FindingKind, string> = {
+  'Surface Discoloration': 'darker or uneven colour patches on the skin',
+  'Surface Damage': 'cuts, marks or broken-looking skin',
+  'Possible Mold-Like Growth': 'grey/green fuzzy-looking spots that could be mould',
+  Shriveling: 'dry, wrinkled-looking skin',
+  Sprouting: 'a green shoot is starting to grow',
+};
+
+export const INTERNAL_QUALITY_NOTE =
+  'Internal quality cannot be determined by any camera — black mold inside or hollow heart stay invisible. Manual cutting remains the only check.';

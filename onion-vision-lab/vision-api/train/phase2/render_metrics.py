@@ -14,6 +14,13 @@ API_DIR = os.path.dirname(os.path.dirname(HERE))
 MODELS_DIR = os.path.join(API_DIR, "models")
 MD = os.path.join(API_DIR, "METRICS.md")
 
+_CS_LABEL = {
+    "baseline": "control (as trained)",
+    "hue_plus25": "hue +25°",
+    "white_style": "white-style (ds .22 dv 1.35)",
+    "hue_minus60": "out-of-family hue −60°",
+}
+
 
 def load(path):
     with open(path) as f:
@@ -23,6 +30,25 @@ def load(path):
 def model_row(name, block):
     return (f"| {name} | {block['accuracy']:.3f} | {block['macro_f1']:.3f} | "
             f"{block['confusion']} |")
+
+
+def colour_rows(cs: dict) -> str:
+    """Render the colour-shift stress table rows (measured numbers)."""
+    variants = cs.get("variants", {})
+    rows = []
+    for k, v in variants.items():
+        rows.append(
+            "| {0} | {1} | {2} | {3} | {4} | {5} | {6} |".format(
+                _CS_LABEL.get(k, k),
+                v.get("note", "").split("(")[0].strip(),
+                v.get("precision", "n/a"),
+                v.get("recall", "n/a"),
+                v.get("f1", "n/a"),
+                v.get("negative_images_with_detections", "n/a"),
+                v.get("negative_fp_total", "n/a"),
+            )
+        )
+    return "\n".join(rows) if rows else "| — | — | — | — | — | — | — |"
 
 
 def main():
@@ -35,6 +61,12 @@ def main():
     gate = ph2.get("verifier_gate", {})
     yolo_sum = load(os.path.join(MODELS_DIR, "train_yolo_summary.json")) if \
         os.path.exists(os.path.join(MODELS_DIR, "train_yolo_summary.json")) else {}
+
+    cs = metrics.get("colourShift", {})
+    cr = colour_rows(cs)
+    oof = cs.get("variants", {}).get("hue_minus60", {})
+    oof_f1 = oof.get("f1", "n/a")
+    oof_fire = oof.get("negative_images_with_detections", "n/a")
 
     md = f"""# METRICS — Onion Vision Lab (Phase 2)
 
@@ -69,7 +101,29 @@ describe this benchmark, not shop-floor performance.
   "832px" config belonged to a different training run and is NOT reused.
 * **Training:** from scratch, {yolo_sum.get('epochs', '?')} epochs (validated plateau), imgsz {yolo_sum.get('imgsz', '?')}, batch {yolo_sum.get('batch', '?')}. Pretrained COCO weights were NOT available in the training sandbox (network restricted to PyPI/npm) — the detector was trained from scratch on the project dataset.
 
-## 2. Verifier — TensorFlow/Keras binary onion-vs-not-onion (gate stage)
+## 2. Colour-shift stress test — the honest single-variety story
+
+The model was trained on ONE variety/lighting (the blue-purple tray photo). To
+say plainly what that means for red / golden / white onions we re-colour the
+frozen 130-positive + 40-negative test set **programmatically** (HSV shifts, not
+photographs of other varieties) and re-run the SERVING detector (conf 0.45,
+letterbox {det.get('input_size', 'n/a')}). Measured by
+`train/eval_variety_shift.py`.
+
+| Variant | Shift | Precision | Recall | F1 | Negatives fired /40 | FP on negatives |
+|---|---|---|---|---|---|---|
+{cr}
+* **Measured honesty:** adjacent colour shifts cost little (hue +25° and the
+  white-style wash-out both stay ≈ 0.95+ F1 on this benchmark), but the
+  **out-of-family −60° cast collapses the detector to F1 {oof_f1}** and it even
+  starts firing on {oof_fire}/40 procedural negatives it previously ignored.
+  Generalising to unseen onion colours is therefore **unvalidated** — exactly
+  why the variety chips in the UI say "estimate" and field validation is pending.
+  (These are NOT photographs of other varieties; they are programmatic
+  re-colourings of the one photographed variety.)
+* Scope: {cs.get('scope', 'n/a')}
+
+## 3. Verifier — TensorFlow/Keras binary onion-vs-not-onion (gate stage)
 
 | Metric | Value |
 |---|---|
@@ -85,7 +139,7 @@ describe this benchmark, not shop-floor performance.
 * Data: {ver.get('data', {}).get('train_pos', '?')} positive train images ({ver.get('data', {}).get('train_crops', '?')} crops + augs) vs {ver.get('data', {}).get('train_neg', '?')} procedural negatives; tested on {ver.get('data', {}).get('test_crops_held_out', '?')} held-out crops + fresh-seed distractors.
 * **Scope:** {ver.get('scope')}
 
-### 2b. Gate effect on the frozen detection benchmark (verifier ON vs OFF)
+### 3b. Gate effect on the frozen detection benchmark (verifier ON vs OFF)
 
 | Measure | before gate | after gate |
 |---|---|---|
@@ -104,7 +158,7 @@ describe this benchmark, not shop-floor performance.
   {gate.get('recall_delta', 'n/a')} recall on the frozen test.
 * τ selection: {gate.get('tau_selection', 'n/a')}.
 
-## 3. Condition models — fused per-onion visible-condition ensemble
+## 4. Condition models — fused per-onion visible-condition ensemble
 
 Benchmark (frozen): **12 held-out test crops × 6 variants/class = 216 images**
 (crop-level split; no test crop appears in CNN/RF training or meta-learner
@@ -126,11 +180,13 @@ fitting). Classes: clear / review / suspect.
 * Meta-learner: {fus['meta']['learner']} on 15 features (3×3 probabilities + 6 cues), fitted on train-split OUT-OF-FOLD predictions ({fus['meta']['fitted_on']}), C={fus['meta']['C_selected_on_val']} selected on VAL, test log-loss {fus['meta']['test_logloss']}.
 * **Scope:** {fus['scope']}
 
-## 4. What these numbers do NOT mean
+## 5. What these numbers do NOT mean
 
 * Not field accuracy — every image derives from one photo's crops or from procedural generation.
 * Not food safety — confidence values are visual prediction confidences only.
 * Not internal quality — a camera cannot see inside an onion.
+* Not variety coverage — the colour-shift table (section 2) is the honest
+  single-variety measurement; unseen varieties remain unvalidated.
 
 *Generated by train/phase2/render_metrics.py from models/metrics.json (served at GET /api/health).*
 """

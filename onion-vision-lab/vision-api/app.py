@@ -29,6 +29,7 @@ from fastapi.staticfiles import StaticFiles
 from schemas import AnalyzeRequest, AnalyzeResponse, OnionResult, Finding, RegionPoint, BBox, OnionMetrics
 from yolo_onnx import OnionDetector, crop_detection
 from ensemble import ConditionEnsemble, OnionVerifier, ENSEMBLE_VERSION, CONDITION_CLASSES
+from hsv_features import estimate_variety
 
 MODELS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
 METRICS_PATH = os.path.join(MODELS_DIR, "metrics.json")
@@ -113,7 +114,7 @@ def _engine_strings(det_ver: str, ens: ConditionEnsemble, ver: OnionVerifier) ->
     if ver.available:
         parts.append("TF/Keras onion verifier gate")
     if ens.available["cnn"]:
-        parts.append("PyTorch MobileNetV3-Small condition CNN")
+        parts.append("PyTorch MobileNetV2 condition CNN")
     if ens.available["rf"]:
         parts.append("sklearn RandomForest (calibrated)")
     parts.append("HSV heuristic + logistic meta-fusion" if ens.available["meta"] else "HSV heuristic (fallback fusion)")
@@ -151,10 +152,20 @@ def analyze(req: AnalyzeRequest):
                 continue
         cond = ensemble.predict(crop)
         kept += 1
+        # Variety ESTIMATE from the onion's inner region only: the 8% pad that
+        # helps the ensemble can contain tray/background (e.g. a white mandi
+        # tray), which would bias the colour heuristic. Estimate = colour-family
+        # guess, never a cultivar claim - labelled "estimate" in the UI.
+        ih, iw = crop.shape[:2]
+        f = 0.78
+        x0, y0 = int((iw - iw * f) / 2), int((ih - ih * f) / 2)
+        variety_est = estimate_variety(crop[y0:y0 + int(ih * f), x0:x0 + int(iw * f)])
         findings = [Finding(kind=f["kind"], confidence=round(float(f["confidence"]), 3), evidence=f["evidence"])
                     for f in cond["findings"]]
         results.append(OnionResult(
             id=f"onion-{kept}",
+            variety=variety_est["variety"],
+            varietyConfidence=variety_est["confidence"],
             bbox=BBox(x=det.x1 / w, y=det.y1 / h, width=det.width / w, height=det.height / h),
             status=cond["statusColor"],
             statusLabel=cond["statusLabel"],
@@ -203,6 +214,17 @@ def health():
     verifier = get_verifier()
     det_block = metrics.get("detection", {})
     ph2 = metrics.get("phase2", {})
+    # condition-fusion.json holds the per-model + fused TEST numbers rendered in
+    # METRICS.md; surface them on /api/health so the dashboard == the document.
+    _fusion = {}
+    try:
+        with open(os.path.join(MODELS_DIR, "phase2", "condition-fusion.json")) as _f:
+            _fusion = json.load(_f)
+    except Exception:
+        _fusion = {}
+    _cond_measured = dict(ph2.get("condition", {}))
+    if _fusion.get("models"):
+        _cond_measured["fusionTest"] = _fusion.get("models", {})
     return {
         "status": "ok" if detector_ok else "degraded",
         "service": "onion-vision-lab/vision-api",
@@ -223,13 +245,14 @@ def health():
                 "gateMeasured": ph2.get("verifier_gate", {}),
             },
             "condition": {
-                "architecture": "PyTorch MobileNetV3-Small CNN + sklearn calibrated RF + HSV heuristic, logistic meta-fusion",
+                "architecture": "PyTorch MobileNetV2 CNN + sklearn calibrated RF + HSV heuristic, logistic meta-fusion",
                 "available": ensemble.available,
                 "version": ENSEMBLE_VERSION,
-                "measured": ph2.get("condition", {}),
+                "measured": _cond_measured,
             },
         },
         "metricsSource": "models/metrics.json (see METRICS.md for full tables + scopes)",
+        "colourShift": metrics.get("colourShift", {}),
         "disclaimers": DISCLAIMERS,
     }
 
