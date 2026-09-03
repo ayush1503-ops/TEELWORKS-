@@ -1,0 +1,23 @@
+# Render Blueprint — Onion Vision Lab v2
+# https://render.com/docs/blueprint-spec
+#
+# Deploys a single Docker web service (free tier).
+# Models are baked into the image — no persistent disk required.
+# Cold-start after 15 min idle: ~30-60 s (model loading).
+
+services:
+  - type: web
+    name: onion-vision-lab
+    runtime: docker
+    # Render builds from the Dockerfile at the repo root
+    dockerfilePath: ./Dockerfile
+    # Free tier — 512 MB RAM, shared CPU, auto-sleeps after 15 min idle
+    plan: free
+    # Render injects PORT automatically; uvicorn reads it via ${PORT:-8788}
+    envVars:
+      - key: PORT
+        value: "10000"
+        # Render free tier uses port 10000 by default for web services
+    healthCheckPath: /api/health
+    # Build cache: persist node_modules and pip cache between builds
+    autoDeploy: true

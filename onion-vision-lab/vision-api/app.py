@@ -24,6 +24,7 @@ import cv2
 import numpy as np
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from schemas import AnalyzeRequest, AnalyzeResponse, OnionResult, Finding, RegionPoint, BBox, OnionMetrics
 from yolo_onnx import OnionDetector, crop_detection
@@ -231,6 +232,18 @@ def health():
         "metricsSource": "models/metrics.json (see METRICS.md for full tables + scopes)",
         "disclaimers": DISCLAIMERS,
     }
+
+
+# ---------------------------------------------------------------------------
+# Static frontend serving (production / single-container deployment)
+# Mount AFTER all API routes so /api/... always hits the routes above.
+# Guarded: only activated when the Vite dist/ folder is present (i.e. the
+# Docker multi-stage build has placed it here). In dev the folder is absent
+# and the API runs stand-alone with Vite's dev server proxying /vision-api.
+# ---------------------------------------------------------------------------
+_DIST_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dist")
+if os.path.isdir(_DIST_DIR):
+    app.mount("/", StaticFiles(directory=_DIST_DIR, html=True), name="frontend")
 
 
 if __name__ == "__main__":
