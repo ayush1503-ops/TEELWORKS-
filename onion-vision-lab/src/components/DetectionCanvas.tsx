@@ -8,9 +8,16 @@ interface Props {
   results: OnionResult[];
   onSelect: (index: number) => void;
   selectedIndex: number | null;
+  maxHeight?: number;
 }
 
-export function DetectionCanvas({ imageSrc, stage, results, onSelect, selectedIndex }: Props) {
+const STROKE: Record<OnionResult['status'], string> = {
+  RED: '#DC2626',
+  YELLOW: '#D97706',
+  GREEN: '#16A34A',
+};
+
+export default function DetectionCanvas({ imageSrc, stage, results, onSelect, selectedIndex, maxHeight }: Props) {
   const [box, setBox] = useState<{ w: number; h: number } | null>(null);
   const [sweep, setSweep] = useState(0);
 
@@ -19,7 +26,7 @@ export function DetectionCanvas({ imageSrc, stage, results, onSelect, selectedIn
     let raf = 0;
     const t0 = performance.now();
     const loop = () => {
-      setSweep(((performance.now() - t0) / 1600) % 1);
+      setSweep(((performance.now() - t0) / 1500) % 1);
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
@@ -27,11 +34,12 @@ export function DetectionCanvas({ imageSrc, stage, results, onSelect, selectedIn
   }, [stage]);
 
   return (
-    <div className="relative w-full overflow-hidden rounded-2xl border border-lab-line bg-black/40">
+    <div className="relative w-full overflow-hidden rounded-2xl border border-line bg-white shadow-soft">
       <img
         src={imageSrc}
         alt="scan"
         className="block w-full"
+        style={maxHeight ? { maxHeight, objectFit: 'contain' } : undefined}
         onLoad={(e) => {
           const el = e.currentTarget;
           setBox({ w: el.naturalWidth, h: el.naturalHeight });
@@ -39,24 +47,24 @@ export function DetectionCanvas({ imageSrc, stage, results, onSelect, selectedIn
       />
       {stage === 'detecting' && (
         <motion.div
-          className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-lab-accent to-transparent shadow-[0_0_18px_4px_rgba(167,139,250,0.45)]"
+          className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-electric to-transparent shadow-[0_0_16px_3px_rgba(0,82,255,0.5)]"
           style={{ top: `${sweep * 100}%` }}
         />
       )}
       {stage === 'done' &&
         box &&
         results.map((r, i) => {
-          const stroke =
-            r.status === 'RED' ? '#f87171' : r.status === 'YELLOW' ? '#fbbf24' : '#34d399';
+          const stroke = STROKE[r.status];
           return (
             <motion.button
               key={r.id}
-              initial={{ scale: 0.6, opacity: 0 }}
+              initial={{ scale: 0.7, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: i * 0.06, type: 'spring', stiffness: 260, damping: 20 }}
+              transition={{ delay: i * 0.05, type: 'spring', stiffness: 260, damping: 20 }}
               onClick={() => onSelect(i)}
+              aria-label={`${r.id} ${r.statusLabel}`}
               className={`absolute border-2 transition ${
-                selectedIndex === i ? 'bg-white/10' : 'hover:bg-white/5'
+                selectedIndex === i ? 'bg-electric/10' : 'hover:bg-white/20'
               }`}
               style={{
                 left: `${r.bbox.x * 100}%`,
@@ -64,14 +72,13 @@ export function DetectionCanvas({ imageSrc, stage, results, onSelect, selectedIn
                 width: `${r.bbox.width * 100}%`,
                 height: `${r.bbox.height * 100}%`,
                 borderColor: stroke,
-                boxShadow: `0 0 0 1px rgba(0,0,0,0.35), 0 0 16px ${stroke}55`,
+                boxShadow: `0 0 0 1px rgba(255,255,255,0.9), 0 0 14px ${stroke}66`,
                 borderRadius: '999px',
               }}
-              aria-label={`${r.id} ${r.statusLabel}`}
             >
               <span
-                className="mono absolute -top-5 left-2 whitespace-nowrap rounded px-1.5 py-0.5 text-[10px] font-bold"
-                style={{ background: `${stroke}22`, color: stroke }}
+                className="mono absolute -top-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border px-1.5 py-0.5 text-[10px] font-bold shadow-sm"
+                style={{ background: '#fff', color: stroke, borderColor: stroke }}
               >
                 {r.id.replace('onion-', '#')} · {(r.confidence * 100).toFixed(0)}%
               </span>
@@ -79,7 +86,7 @@ export function DetectionCanvas({ imageSrc, stage, results, onSelect, selectedIn
           );
         })}
       {stage === 'detecting' && (
-        <div className="mono absolute bottom-3 left-3 rounded-lg bg-black/60 px-3 py-1.5 text-xs text-lab-accent">
+        <div className="mono absolute bottom-3 left-3 rounded-lg border border-electric/30 bg-white/95 px-3 py-1.5 text-xs font-semibold text-electric shadow-soft">
           detecting onions · letterbox 320 · conf 0.45 …
         </div>
       )}

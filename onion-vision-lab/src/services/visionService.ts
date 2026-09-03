@@ -3,19 +3,17 @@
  *
  * Priority: VITE_VISION_API env var controls the API base URL:
  *   - Not set / undefined  → '/vision-api'  (Vite dev-server proxies to localhost:8788)
- *   - Set to empty string  → ''             (same-origin deployment: API at /api/...)
+ *   - Set to empty string  → ''             (same-origin deployment)
  *   - Set to a URL         → that URL       (cross-origin explicit override)
  *
  * If the remote API cannot be reached or fails, we degrade gracefully to
  * the in-browser HSV heuristic and label the engine DEMO. The UI consumes
- * OnionResult[] either way.
+ * OnionResult[] either way — and every DEMO badge is truthful.
  */
 
 import type { AnalyzeResponse, SourceMode } from '../types/vision';
 import { localHeuristicAnalyze } from './localHeuristic';
 
-// Use explicit null/undefined check so that VITE_VISION_API='' (empty) is
-// honoured as same-origin (no prefix) rather than falling through to '/vision-api'.
 const _envBase = import.meta.env.VITE_VISION_API as string | undefined;
 export const REMOTE_BASE: string = _envBase !== undefined ? _envBase : '/vision-api';
 
@@ -82,28 +80,68 @@ function toJpegDataUrl(src: HTMLImageElement | HTMLCanvasElement, maxSide: numbe
   return c.toDataURL('image/jpeg', 0.9);
 }
 
-interface HealthShape {
+/* ---------------------------- health ---------------------------- */
+
+export interface HealthJson {
   status?: string;
+  service?: string;
+  version?: string;
+  engine?: string;
   pipeline?: {
-    detector?: { loaded?: boolean };
-    verifier?: { loaded?: boolean };
-    condition?: { available?: { cnn?: boolean; rf?: boolean; meta?: boolean } };
+    detector?: {
+      loaded?: boolean;
+      architecture?: string;
+      conf?: number;
+      inputSize?: number;
+      measured?: Record<string, unknown>;
+    };
+    verifier?: {
+      loaded?: boolean;
+      architecture?: string;
+      gateThreshold?: number;
+      measured?: Record<string, unknown>;
+      gateMeasured?: Record<string, unknown>;
+    };
+    condition?: {
+      architecture?: string;
+      version?: string;
+      available?: { cnn?: boolean; rf?: boolean; meta?: boolean };
+      measured?: Record<string, unknown>;
+    };
   };
+  colourShift?: {
+    variants?: Record<string, { precision?: number; recall?: number; f1?: number; note?: string }>;
+    scope?: string;
+  };
+  metricsSource?: string;
+  disclaimers?: string[];
 }
 
-export async function probeHealth(): Promise<{ ok: boolean; text: string }> {
+export interface ProbeResult {
+  ok: boolean;
+  text: string;
+  health: HealthJson | null;
+}
+
+export async function fetchHealthFull(): Promise<ProbeResult> {
   try {
     const res = await fetch(`${REMOTE_BASE}/api/health`);
-    if (!res.ok) return { ok: false, text: `health ${res.status}` };
-    const j = (await res.json()) as HealthShape;
+    if (!res.ok) return { ok: false, text: `health ${res.status}`, health: null };
+    const j = (await res.json()) as HealthJson;
     const parts: string[] = [];
     if (j.pipeline?.detector?.loaded) parts.push('YOLOv8n');
     if (j.pipeline?.verifier?.loaded) parts.push('TF-verifier');
     if (j.pipeline?.condition?.available?.cnn) parts.push('CNN');
     if (j.pipeline?.condition?.available?.rf) parts.push('RF');
     if (j.pipeline?.condition?.available?.meta) parts.push('meta-fusion');
-    return { ok: true, text: parts.length ? parts.join(' + ') : String(j.status ?? 'ok') };
+    return { ok: true, text: parts.length ? parts.join(' + ') : String(j.status ?? 'ok'), health: j };
   } catch {
-    return { ok: false, text: 'unreachable' };
+    return { ok: false, text: 'unreachable', health: null };
   }
+}
+
+/** short probe used by the navbar pill */
+export async function probeHealth(): Promise<{ ok: boolean; text: string }> {
+  const p = await fetchHealthFull();
+  return { ok: p.ok, text: p.text };
 }

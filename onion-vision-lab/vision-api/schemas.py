@@ -40,6 +40,9 @@ class OnionMetrics(BaseModel):
     verifierConfidence: Optional[float] = None
 
 
+VARIETY_VALUES = Literal["RED", "GOLDEN", "PURPLE", "WHITE", "UNKNOWN"]
+
+
 class OnionResult(BaseModel):
     id: str
     bbox: BBox
@@ -52,6 +55,10 @@ class OnionResult(BaseModel):
     modelName: str
     notes: str = ""
     signals: Optional[dict] = None
+    # Colour-family ESTIMATE of the variety from visible skin (never ground
+    # truth); varietyConfidence = agreement of skin pixels with the decision.
+    variety: VARIETY_VALUES = "UNKNOWN"
+    varietyConfidence: float = 0.0
 
 
 class AnalyzeRequest(BaseModel):

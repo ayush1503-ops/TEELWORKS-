@@ -120,5 +120,62 @@
       },
       "data_scope": "frozen 12 test crops x 6 variants/class = 216 images, programmatic synthetic damage over real crops from ONE field photo; field validation pending"
     }
+  },
+  "colourShift": {
+    "test": "frozen 130 positive scenes (9 held-out crops) + 40 procedural negatives",
+    "conf": 0.45,
+    "iou": 0.5,
+    "input_size": 320,
+    "variants": {
+      "baseline": {
+        "precision": 0.9974,
+        "recall": 0.9267,
+        "f1": 0.9607,
+        "tp": 379,
+        "fp": 1,
+        "fn": 30,
+        "negative_images_with_detections": 0,
+        "negative_fp_total": 0,
+        "avg_inference_ms": 10.0,
+        "note": "no colour shift (frozen-set control)"
+      },
+      "hue_plus25": {
+        "precision": 0.9973,
+        "recall": 0.9169,
+        "f1": 0.9554,
+        "tp": 375,
+        "fp": 1,
+        "fn": 34,
+        "negative_images_with_detections": 0,
+        "negative_fp_total": 0,
+        "avg_inference_ms": 9.5,
+        "note": "hue rotated +25 deg (adjacent colour family)"
+      },
+      "white_style": {
+        "precision": 0.9947,
+        "recall": 0.9218,
+        "f1": 0.9569,
+        "tp": 377,
+        "fp": 2,
+        "fn": 32,
+        "negative_images_with_detections": 0,
+        "negative_fp_total": 0,
+        "avg_inference_ms": 10.0,
+        "note": "desaturated 22% + value x1.35 (white/cream look; ds .22 dv 1.35)"
+      },
+      "hue_minus60": {
+        "precision": 0.7812,
+        "recall": 0.2445,
+        "f1": 0.3724,
+        "tp": 100,
+        "fp": 28,
+        "fn": 309,
+        "negative_images_with_detections": 10,
+        "negative_fp_total": 13,
+        "avg_inference_ms": 9.1,
+        "note": "hue rotated -60 deg (out-of-family green/teal cast)"
+      }
+    },
+    "scope": "colour-shift stress test on the FROZEN synthetic benchmark (crops from ONE field photo); shifts are programmatic HSV re-colourings, NOT photographs of other varieties; the single training variety means out-of-family colours are expected to fail - these are the honest measured numbers"
   }
 }

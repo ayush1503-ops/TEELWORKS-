@@ -22,6 +22,9 @@ image (base64, in-memory only)
           • HSV heuristic rules (Phase 1)                 -> cue scores
           fused by a multinomial LogisticRegression meta-learner (soft-probability stacking)
   └─> OnionResult[]: bbox + status vocabulary + findings + AI-INFERRED regions + cues + signals
+       + variety ESTIMATE per onion (colour-family heuristic: RED / GOLDEN /
+         PURPLE / WHITE / UNKNOWN — never ground truth; estimated on the
+         inner region of the crop so tray/background pixels cannot bias it)
 ```
 
 Files: `app.py` (API) · `yolo_onnx.py` (detector) · `ensemble.py` (verifier +
@@ -47,6 +50,7 @@ actual pixels); scenes/damage/distractors are **programmatic synthetic**.
 | `condition-rf.joblib` | calibrated RandomForest |
 | `condition-meta-lr.joblib` | logistic meta-learner |
 | `metrics.json` | all measured numbers (served by /api/health) |
+| `variety_shift.json` | measured colour-shift stress test (single-variety honesty) |
 
 If any Phase-2 artefact is missing at boot, the API degrades honestly to
 whatever signals exist and says so in the response — it never fakes a signal.
@@ -74,6 +78,7 @@ python3 make_dataset.py             # v1: copy-paste scenes (520 train / 130 val
 python3 make_dataset2.py            # v2: +400 hard negatives, FREEZES the 170-image test set
 python3 train_yolo.py               # YOLOv8n (from scratch in this sandbox - see METRICS.md)
 python3 evaluate.py                 # frozen-set detection metrics -> metrics.json
+python3 eval_variety_shift.py       # colour-shift stress test -> variety_shift.json + metrics.json
 
 cd phase2
 python3 gen_condition_data.py       # synthetic damage labels (true by construction)
@@ -101,6 +106,10 @@ kills; every number in METRICS.md comes from these logged runs).
   unknowable in every response; 3D views show visible damage or clearly
   labelled **AI-INFERRED REGION**s.
 * Frames are decoded in memory for the analyze call only — nothing is stored.
+* Variety labels are a colour heuristic ESTIMATE — the app never claims to
+  identify a cultivar, and `eval_variety_shift.py` measures how far the
+  detector generalises to other onion colours (honestly: out-of-family colours
+  fail; see METRICS.md section 2).
 
 ## Environment notes (this build)
 
